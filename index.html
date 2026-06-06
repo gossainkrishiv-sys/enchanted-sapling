@@ -153,43 +153,158 @@
         /* ============================================================
            MOBILE RESPONSIVENESS (Media Queries)
            ============================================================ */
-        @media (max-width: 768px) {
-            /* Fix sections */
-            section { padding: 60px 5% !important; }
+@media screen and (max-width: 768px) {
 
-            /* Top Bar */
-            .top-bar { flex-direction: column; align-items: center; gap: 8px; text-align: center; font-size: 0.75rem; }
+    html, body {
+        width: 100%;
+        overflow-x: hidden;
+    }
 
-            /* Navbar */
-            nav { flex-direction: column; gap: 20px; padding: 20px 5%; }
-            .logo-space { width: 100%; justify-content: center; }
-            .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; }
-            
-            /* Hero Section */
-            .hero { flex-direction: column; text-align: center; padding-top: 40px !important; }
-            .hero-content { padding-right: 0; margin-bottom: 40px; }
-            .hero h1 { font-size: 3rem; }
-            .hero p { margin: 0 auto 30px auto; }
-            .hero-buttons { justify-content: center; flex-wrap: wrap; }
-            .hero-image-placeholder { width: 100%; height: 350px; border-radius: 20px 50px 20px 20px; }
-            .hero-image-placeholder img { border-radius: 20px 50px 20px 20px; }
+    * {
+        max-width: 100%;
+    }
 
-            /* Features */
-            .features { flex-direction: column; gap: 40px; align-items: center; text-align: center; }
-            .feature-item { flex-direction: column; gap: 10px; }
+    .top-bar {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+        padding: 10px;
+    }
 
-            /* About Section */
-            .about-section { flex-direction: column; text-align: center; }
-            .about-image { width: 100%; height: 300px; order: -1; margin-bottom: 20px; }
-            .about-text h2 { font-size: 2.2rem; }
+    nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+    }
 
-            /* Featured Section */
-            .section-header h2 { font-size: 2.2rem; }
+    .logo-space {
+        width: auto;
+        font-size: 1.2rem;
+        padding: 8px 12px;
+    }
 
-            /* Contact Form */
-            .contact-section h2 { font-size: 2.2rem; }
-            .custom-form { padding: 30px 20px; }
-        }
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        font-size: 0.8rem;
+    }
+
+    .nav-icons {
+        display: none;
+    }
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        min-height: auto;
+        padding: 40px 20px;
+    }
+
+    .hero-content {
+        padding-right: 0;
+        width: 100%;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+        line-height: 1.2;
+    }
+
+    .hero p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .hero-image-placeholder {
+        width: 100%;
+        height: 250px;
+        margin-top: 20px;
+        border-radius: 15px;
+    }
+
+    .hero-image-placeholder img {
+        border-radius: 15px;
+    }
+
+    .features {
+        flex-direction: column;
+        gap: 20px;
+        padding: 40px 20px;
+    }
+
+    .feature-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-section {
+        flex-direction: column;
+        gap: 20px;
+        padding: 40px 20px;
+    }
+
+    .about-image {
+        width: 100%;
+        height: 250px;
+    }
+
+    .about-text {
+        text-align: center;
+    }
+
+    .about-text h2 {
+        font-size: 2rem;
+    }
+
+    .section-header h2 {
+        font-size: 2rem;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .product-card {
+        width: 100%;
+    }
+
+    .card-carousel {
+        height: 260px;
+    }
+
+    .contact-section {
+        padding: 50px 20px;
+    }
+
+    .contact-section h2 {
+        font-size: 2rem;
+    }
+
+    .custom-form {
+        padding: 20px;
+    }
+
+    .btn,
+    .btn-primary,
+    .btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+
+    footer {
+        padding: 20px;
+        font-size: 0.8rem;
+    }
+}
     </style>
 </head>
 <body>
