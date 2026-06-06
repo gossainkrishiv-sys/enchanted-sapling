@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enchanted Sapling</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-green: #2a4b36;
+            --secondary-green: #3a6349;
+            --accent-gold: #c6a26d;
+            --bg-cream: #fcfbf8;
+            --bg-white: #ffffff;
+            --text-dark: #2c2c2c;
+            --text-light: #666666;
+            --border-color: #eee9dd;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
+            --shadow-soft: 0 8px 25px rgba(42, 75, 54, 0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background-color: var(--bg-cream); color: var(--text-dark); line-height: 1.7; overflow-x: hidden; scroll-behavior: smooth; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- BOOT LOADER --- */
+        #boot-loader {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: var(--bg-cream); z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.4s ease-out;
+        }
+        .grow-container { position: relative; width: 100px; height: 120px; display: flex; justify-content: center; align-items: flex-end; }
+        .seed { width: 12px; height: 18px; background-color: #6b4c3a; border-radius: 50%; position: absolute; bottom: 10px; animation: dropSeed 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        .plant { font-size: 4rem; color: var(--primary-green); position: absolute; bottom: 0; transform-origin: bottom center; opacity: 0; transform: scale(0); animation: growPlant 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s forwards; }
+        @keyframes dropSeed { 0% { transform: translateY(-150px); opacity: 1; } 80% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(0); opacity: 0; } }
+        @keyframes growPlant { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* --- TOP BAR --- */
+        .top-bar { background-color: var(--primary-green); color: #fff; font-size: 0.8rem; display: flex; justify-content: center; gap: 50px; padding: 10px 20px; letter-spacing: 1.5px; font-weight: 300; }
+
+        /* --- NAV --- */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background-color: rgba(252, 251, 248, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+        .logo-space { font-family: var(--font-heading); font-size: 2.2rem; color: var(--primary-green); font-style: italic; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 8px; background: var(--bg-white); box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .logo-space span { font-size: 0.8rem; font-family: var(--font-body); color: var(--accent-gold); letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 40px; font-size: 0.95rem; font-weight: 400; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-links li a { transition: color 0.3s; color: var(--text-dark); }
+        .nav-links li a:hover { color: var(--accent-gold); }
+        .nav-icons { display: flex; gap: 25px; font-size: 1.2rem; color: var(--text-dark); }
+        .nav-icons i { cursor: pointer; transition: color 0.3s; }
+        .nav-icons i:hover { color: var(--accent-gold); }
+
+        /* --- BUTTONS --- */
+        .btn { padding: 14px 35px; border-radius: 40px; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 12px; text-transform: uppercase; letter-spacing: 1.5px; border: none; }
+        .btn-primary { background-color: var(--primary-green); color: #fff; border: 1px solid var(--primary-green); }
+        .btn-primary:hover { background-color: var(--secondary-green); box-shadow: 0 5px 15px rgba(42, 75, 54, 0.2); transform: translateY(-2px); }
+        .btn-outline { background-color: transparent; color: var(--primary-green); border: 1px solid var(--primary-green); }
+        .btn-outline:hover { background-color: var(--primary-green); color: #fff; }
+
+        /* --- HERO --- */
+        .hero { display: flex; align-items: center; padding: 100px 5%; min-height: 80vh; }
+        .hero-content { flex: 1; padding-right: 60px; }
+        .subtitle { color: var(--accent-gold); font-size: 0.9rem; font-weight: 700; letter-spacing: 3px; margin-bottom: 25px; display: inline-block; text-transform: uppercase; }
+        .hero h1 { font-family: var(--font-heading); font-size: 5rem; color: var(--primary-green); line-height: 1.1; margin-bottom: 25px; font-weight: 400; }
+        .hero h1 i { font-style: italic; color: var(--accent-gold); }
+        .hero p { color: var(--text-light); margin-bottom: 45px; font-size: 1.15rem; max-width: 500px; }
+        .hero-buttons { display: flex; gap: 20px; }
+        .hero-image-placeholder { flex: 1; height: 550px; background: linear-gradient(135deg, #f4eee0 0%, #e8e3d8 100%); border-radius: 20px 100px 20px 20px; display: flex; align-items: center; justify-content: center; color: var(--text-light); font-style: italic; box-shadow: var(--shadow-soft); border: 1px solid var(--border-color); overflow: hidden; }
+        .hero-image-placeholder img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px 100px 20px 20px; }
+
+        /* --- FEATURES BAR --- */
+        .features { display: flex; justify-content: center; gap: 80px; padding: 60px 5%; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); background-color: var(--bg-white); }
+        .feature-item { display: flex; align-items: center; gap: 20px; }
+        .feature-item i { font-size: 1.8rem; color: var(--accent-gold); }
+        .feature-item h4 { font-size: 0.9rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dark); margin-bottom: 4px; }
+        .feature-item p { font-size: 0.85rem; color: var(--text-light); }
+
+        /* --- ABOUT --- */
+        .about-section { padding: 100px 5%; display: flex; align-items: center; gap: 60px; background-color: var(--bg-cream); }
+        .about-image { flex: 1; height: 450px; background-color: #f0ebe1; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-light); border: 1px solid var(--border-color); overflow: hidden; }
+        .about-image img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+        .about-text { flex: 1; }
+        .about-text h2 { font-family: var(--font-heading); font-size: 3rem; color: var(--primary-green); margin-bottom: 20px; font-weight: 400; }
+        .about-text p { color: var(--text-light); font-size: 1.1rem; margin-bottom: 20px; }
+
+        /* =====================================================
+           IMAGE CONFIG — Add your image URLs here!
+           ===================================================== */
+        /* 
+          HOW TO ADD IMAGES TO PRODUCT CARDS:
+          Each card has a data-images attribute in the HTML.
+          Replace the placeholder paths like:
+            data-images="images/plant1.jpg,images/plant2.jpg,images/plant3.jpg"
+          or use full URLs:
+            data-images="https://example.com/img1.jpg,https://example.com/img2.jpg,..."
+        */
+
+        /* --- FEATURED COLLECTION --- */
+        .featured-section { padding: 100px 5%; background-color: var(--bg-white); }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-family: var(--font-heading); font-size: 3rem; color: var(--primary-green); font-weight: 400; }
+        .section-header p { color: var(--accent-gold); font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; }
+
+        /* --- PRODUCT CARD with CAROUSEL --- */
+        .product-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid transparent;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+        .product-card:hover { transform: translateY(-12px); box-shadow: var(--shadow-soft); border: 1px solid var(--border-color); }
+
+        /* Carousel wrapper inside card */
+        .card-carousel {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background-color: #f9f8f4;
+        }
+        .card-carousel .carousel-slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+        .card-carousel .carousel-slide.active { opacity: 1; }
+        .card-carousel .carousel-slide img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .card-carousel .carousel-slide .placeholder-label {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-light);
+            font-style: italic;
+            font-size: 0.9rem;
+            background: #f9f8f4;
+        }
+        /* Dot indicators */
+        .carousel-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 5;
+        }
+        .carousel-dots span {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.6);
+            transition: background 0.3s;
+        }
+        .carousel-dots span.active { background: var(--accent-gold); }
+
+        /* Card body below image */
+        .card-body { padding: 20px 25px 25px; }
+        .product-title { font-family: var(--font-heading); font-size: 1.4rem; color: var(--primary-green); margin-bottom: 12px; font-weight: 400; }
+        
+        /* Order-this button on card */
+        .btn-card-order {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background-color: var(--primary-green);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-card-order:hover { background-color: var(--secondary-green); transform: translateY(-2px); box-shadow: 0 5px 12px rgba(42,75,54,0.2); }
+
+        /* --- CONTACT FORM --- */
+        .contact-section { padding: 100px 5%; background-color: var(--primary-green); color: #fff; text-align: center; }
+        .contact-section h2 { font-family: var(--font-heading); font-size: 3rem; margin-bottom: 15px; font-weight: 400; }
+        .contact-section p { margin-bottom: 50px; color: #d1d9d4; font-size: 1.1rem; }
+        .custom-form { max-width: 650px; margin: 0 auto; background: #fff; padding: 50px; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .input-group { margin-bottom: 25px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 10px; color: var(--primary-green); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .custom-form input, .custom-form textarea { width: 100%; padding: 15px 20px; border: 1px solid #e0e0e0; border-radius: 8px; font-family: var(--font-body); font-size: 1rem; background-color: #fafafa; transition: border 0.3s, background 0.3s; }
+        .custom-form input:focus, .custom-form textarea:focus { outline: none; border-color: var(--accent-gold); background-color: #fff; }
+        .custom-form button { width: 100%; justify-content: center; margin-top: 15px; padding: 18px; font-size: 1rem; }
+
+        /* Pre-fill notice */
+        #prefill-notice {
+            display: none;
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-bottom: 20px;
+            color: var(--primary-green);
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        footer { text-align: center; padding: 30px; background-color: #1a2e20; color: #888; font-size: 0.9rem; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+<div id="boot-loader">
+    <div class="grow-container">
+        <div class="seed"></div>
+        <div class="plant"><i class="fa-solid fa-seedling"></i></div>
+    </div>
+</div>
+
+<div class="top-bar">
+    <span><i class="fa-solid fa-leaf"></i> Free delivery on orders above ₹999</span>
+    <span><i class="fa-solid fa-pen-nib"></i> Custom orders welcome</span>
+</div>
+
+<nav>
+    <div class="logo-space">
+        <i class="fa-solid fa-tree"></i> Logo <span>[Insert Image]</span>
+    </div>
+    <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#featured">Collections</a></li>
+        <li><a href="#contact">Custom Orders</a></li>
+    </ul>
+    <div class="nav-icons">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <i class="fa-regular fa-user"></i>
+        <i class="fa-solid fa-cart-shopping"></i>
+    </div>
+</nav>
+
+<section class="hero" data-aos="fade-in">
+    <div class="hero-content" data-aos="fade-right" data-aos-delay="200">
+        <span class="subtitle"><i class="fa-solid fa-fan"></i> Handcrafted Beauty</span>
+        <h1>Beautiful Creations,<br><i>Naturally Yours</i></h1>
+        <p>Thoughtfully designed and handcrafted macramé items that bring charm, character, and a touch of magic to your everyday space.</p>
+        <div class="hero-buttons">
+            <a href="#featured" class="btn btn-primary">Discover More <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="#contact" class="btn btn-outline">Custom Orders <i class="fa-solid fa-leaf"></i></a>
+        </div>
+    </div>
+    <div class="hero-image-placeholder" data-aos="fade-left" data-aos-delay="400">
+        <!-- Replace src with your hero image URL -->
+        <img src="" alt="Hero Image" onerror="this.style.display='none'; this.parentElement.innerHTML='[ Main Hero Image Area ]';">
+    </div>
+</section>
+
+<section class="features" data-aos="fade-up">
+    <div class="feature-item">
+        <i class="fa-solid fa-hand-holding-heart"></i>
+        <div><h4>Handcrafted</h4><p>With love & care</p></div>
+    </div>
+    <div class="feature-item">
+        <i class="fa-solid fa-gem"></i>
+        <div><h4>Premium Quality</h4><p>Finest materials</p></div>
+    </div>
+    <div class="feature-item">
+        <i class="fa-solid fa-pen-nib"></i>
+        <div><h4>Custom Designs</h4><p>Made just for you</p></div>
+    </div>
+    <div class="feature-item">
+        <i class="fa-solid fa-box-check"></i>
+        <div><h4>Secure Delivery</h4><p>Safe packaging</p></div>
+    </div>
+</section>
+
+<section id="about" class="about-section">
+    <div class="about-image" data-aos="fade-right">
+        <!-- Replace src with your about/workshop image URL -->
+        <img src="" alt="About Image" onerror="this.style.display='none'; this.parentElement.innerHTML='[ Image of the Artist / Workshop ]';">
+    </div>
+    <div class="about-text" data-aos="fade-left">
+        <span class="subtitle">Our Roots</span>
+        <h2>Crafting Magic with Knots & Nature</h2>
+        <p>Welcome to Enchanted Sapling. We believe that a home should be a sanctuary, filled with items that tell a story and bring a sense of peace to your surroundings.</p>
+        <p>Every piece in our collection—from delicate bookmarks to elaborate plant hangers—is carefully knotted by hand using premium, sustainable cords and materials.</p>
+        <p>Whether you are looking for a ready-made treasure or a custom-designed piece made specifically for your space, we are here to weave a little bit of magic for you.</p>
+    </div>
+</section>
+
+<section id="featured" class="featured-section">
+    <div class="section-header" data-aos="fade-up">
+        <p>Handpicked for you</p>
+        <h2>Our Featured Collection</h2>
+    </div>
+
+    <!--
+    ==========================================================
+    HOW TO ADD IMAGES TO CARDS:
+    For each product-card, set data-images to a comma-separated
+    list of 3 image URLs (relative paths or full URLs).
+    Example:
+      data-images="photos/plant1.jpg,photos/plant2.jpg,photos/plant3.jpg"
+    or:
+      data-images="https://i.imgur.com/abc.jpg,https://i.imgur.com/def.jpg,https://i.imgur.com/ghi.jpg"
+    ==========================================================
+    -->
+
+    <div class="product-grid">
+
+        <!-- CARD 1: Custom Plants -->
+        <div class="product-card"
+             data-aos="fade-up" data-aos-delay="100"
+             data-product="Custom Plants"
+             data-images="PLANT_IMG_1,PLANT_IMG_2,PLANT_IMG_3">
+            <div class="card-carousel">
+                <!-- slides injected by JS -->
+                <div class="carousel-dots"></div>
+            </div>
+            <div class="card-body">
+                <h3 class="product-title">Custom Plants</h3>
+                <button class="btn-card-order" onclick="orderCard(this)">
+                    Order This <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- CARD 2: Macramé Keychain -->
+        <div class="product-card"
+             data-aos="fade-up" data-aos-delay="200"
+             data-product="Macramé Keychain"
+             data-images="KEYCHAIN_IMG_1,KEYCHAIN_IMG_2,KEYCHAIN_IMG_3">
+            <div class="card-carousel">
+                <div class="carousel-dots"></div>
+            </div>
+            <div class="card-body">
+                <h3 class="product-title">Macramé Keychain</h3>
+                <button class="btn-card-order" onclick="orderCard(this)">
+                    Order This <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- CARD 3: Plant Hanger -->
+        <div class="product-card"
+             data-aos="fade-up" data-aos-delay="300"
+             data-product="Macramé Plant Hanger"
+             data-images="HANGER_IMG_1,HANGER_IMG_2,HANGER_IMG_3">
+            <div class="card-carousel">
+                <div class="carousel-dots"></div>
+            </div>
+            <div class="card-body">
+                <h3 class="product-title">Macramé Plant Hanger</h3>
+                <button class="btn-card-order" onclick="orderCard(this)">
+                    Order This <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- CARD 4: Wind Chime -->
+        <div class="product-card"
+             data-aos="fade-up" data-aos-delay="400"
+             data-product="Macramé Wind Chime"
+             data-images="CHIME_IMG_1,CHIME_IMG_2,CHIME_IMG_3">
+            <div class="card-carousel">
+                <div class="carousel-dots"></div>
+            </div>
+            <div class="card-body">
+                <h3 class="product-title">Macramé Wind Chime</h3>
+                <button class="btn-card-order" onclick="orderCard(this)">
+                    Order This <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- CARD 5: Bookmark -->
+        <div class="product-card"
+             data-aos="fade-up" data-aos-delay="500"
+             data-product="Macramé Bookmark"
+             data-images="BOOKMARK_IMG_1,BOOKMARK_IMG_2,BOOKMARK_IMG_3">
+            <div class="card-carousel">
+                <div class="carousel-dots"></div>
+            </div>
+            <div class="card-body">
+                <h3 class="product-title">Macramé Bookmark</h3>
+                <button class="btn-card-order" onclick="orderCard(this)">
+                    Order This <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section id="contact" class="contact-section">
+    <div data-aos="fade-up">
+        <h2>Request a Custom Order</h2>
+        <p>Tell us what you're looking for, and we'll craft it for you!</p>
+
+        <form id="customOrderForm" class="custom-form">
+            <div id="prefill-notice">
+                <i class="fa-solid fa-circle-check"></i>
+                We've pre-filled the item for you — just add your details below!
+            </div>
+            <div class="input-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="John Doe" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="john@example.com" required>
+            </div>
+            <div class="input-group">
+                <label for="address">Shipping Address</label>
+                <input type="text" id="address" placeholder="Your full address here" required>
+            </div>
+            <div class="input-group">
+                <label for="description">What would you like us to craft?</label>
+                <textarea id="description" rows="5" placeholder="Describe the item, colors, sizes, etc." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Open in Gmail to Send <i class="fa-brands fa-google"></i></button>
+        </form>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2026 Enchanted Sapling. All Rights Reserved.</p>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+
+/* ============================================================
+   BOOT LOADER
+   ============================================================ */
+window.addEventListener('load', () => {
+    AOS.init({ duration: 900, once: true, offset: 50, easing: 'ease-out-cubic' });
+    const loader = document.getElementById('boot-loader');
+    setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 400);
+    }, 1200);
+});
+
+/* ============================================================
+   CAROUSEL SETUP
+   Each card has data-images="url1,url2,url3"
+   We build slides and start a 2-second interval per card.
+   ============================================================ */
+document.querySelectorAll('.product-card').forEach(card => {
+    const rawImages = (card.getAttribute('data-images') || '').split(',').map(s => s.trim()).filter(Boolean);
+    const carousel  = card.querySelector('.card-carousel');
+    const dotsEl    = card.querySelector('.carousel-dots');
+
+    // Create 3 slides (use image if URL looks real, else show placeholder)
+    const labels = ['Image 1', 'Image 2', 'Image 3'];
+    rawImages.forEach((src, idx) => {
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide' + (idx === 0 ? ' active' : '');
+
+        const isPlaceholder = src.includes('_IMG_') || src === '' || src.startsWith('PLACEHOLDER');
+
+        if (!isPlaceholder) {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = card.getAttribute('data-product') + ' ' + (idx + 1);
+            img.onerror = function() {
+                // fallback to placeholder label if image fails
+                this.parentElement.innerHTML = `<div class="placeholder-label">[ ${labels[idx]} ]</div>`;
+            };
+            slide.appendChild(img);
+        } else {
+            slide.innerHTML = `<div class="placeholder-label">[ ${labels[idx]} ]</div>`;
+        }
+
+        carousel.insertBefore(slide, dotsEl);
+
+        // dot
+        const dot = document.createElement('span');
+        if (idx === 0) dot.classList.add('active');
+        dotsEl.appendChild(dot);
+    });
+
+    // Auto-rotate every 2 seconds
+    let current = 0;
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const dots   = dotsEl.querySelectorAll('span');
+
+    if (slides.length > 1) {
+        setInterval(() => {
+            slides[current].classList.remove('active');
+            dots[current].classList.remove('active');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('active');
+            dots[current].classList.add('active');
+        }, 2000);
+    }
+});
+
+/* ============================================================
+   ORDER CARD BUTTON — scrolls to form and pre-fills product
+   ============================================================ */
+function orderCard(btn) {
+    // Stop click from bubbling to card
+    event.stopPropagation();
+
+    const card        = btn.closest('.product-card');
+    const productName = card.getAttribute('data-product') || 'Unknown Item';
+
+    // Pre-fill the description textarea
+    const descField = document.getElementById('description');
+    descField.value = `I would like to order: ${productName}\n\nAdditional details:\n`;
+
+    // Show notice
+    document.getElementById('prefill-notice').style.display = 'block';
+
+    // Scroll to contact section
+    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+
+    // Focus description after scroll
+    setTimeout(() => descField.focus(), 800);
+}
+
+/* ============================================================
+   GMAIL FORM SUBMIT
+   ============================================================ */
+document.getElementById('customOrderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name        = document.getElementById('name').value;
+    const email       = document.getElementById('email').value;
+    const address     = document.getElementById('address').value;
+    const description = document.getElementById('description').value;
+
+    const targetEmail = 'enchanted.sapling1966@gmail.com';
+    const subject = encodeURIComponent("New Custom Order Request - " + name);
+    const body = encodeURIComponent(
+        "Hi Enchanted Sapling,\n\n" +
+        "I would like to request a custom order. Here are my details:\n\n" +
+        "Name: " + name + "\n" +
+        "Email: " + email + "\n" +
+        "Address: " + address + "\n\n" +
+        "Order Details:\n" + description + "\n\n" +
+        "Thank you!"
+    );
+
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${targetEmail}&su=${subject}&body=${body}`;
+    window.open(gmailUrl, '_blank');
+});
+
+</script>
+</body>
+</html>
