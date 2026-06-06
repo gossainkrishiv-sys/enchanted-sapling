@@ -498,7 +498,7 @@
                 <label for="description">What would you like us to craft?</label>
                 <textarea id="description" rows="5" placeholder="Describe the item, colors, sizes, etc." required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Open in Gmail to Send <i class="fa-brands fa-google"></i></button>
+            <button type="submit" class="btn btn-primary">Send on WhatsApp <i class="fa-brands fa-whatsapp"></i></button>
         </form>
     </div>
 </section>
@@ -585,20 +585,18 @@ document.getElementById('customOrderForm').addEventListener('submit', function(e
     const address     = document.getElementById('address').value;
     const description = document.getElementById('description').value;
 
-    const targetEmail = 'enchanted.sapling1966@gmail.com';
-    const subject = encodeURIComponent("New Custom Order Request - " + name);
-    const body = encodeURIComponent(
-        "Hi Enchanted Sapling,\n\n" +
-        "I would like to request a custom order. Here are my details:\n\n" +
-        "Name: " + name + "\n" +
-        "Email: " + email + "\n" +
-        "Address: " + address + "\n\n" +
-        "Order Details:\n" + description + "\n\n" +
-        "Thank you!"
-    );
+    const phone = "918368440173";
 
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${targetEmail}&su=${subject}&body=${body}`;
-    window.open(gmailUrl, '_blank');
+const message = encodeURIComponent(
+    "🌱 New Custom Order Request\n\n" +
+    "Name: " + name + "\n" +
+    "Email: " + email + "\n" +
+    "Address: " + address + "\n\n" +
+    "Order Details:\n" + description
+);
+
+const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
+window.location.href = whatsappUrl;
 });
 </script>
 </body>
