@@ -51,6 +51,15 @@
         nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background-color: rgba(252, 251, 248, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
         .logo-space { font-family: var(--font-heading); font-size: 2.2rem; color: var(--primary-green); font-style: italic; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 8px; background: var(--bg-white); box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .logo-space span { font-size: 0.8rem; font-family: var(--font-body); color: var(--accent-gold); letter-spacing: 1px; }
+        
+        /* ADDED: Logo CSS */
+        .logo-space img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
         .nav-links { display: flex; gap: 40px; font-size: 0.95rem; font-weight: 400; text-transform: uppercase; letter-spacing: 1px; }
         .nav-links li a { transition: color 0.3s; color: var(--text-dark); }
         .nav-links li a:hover { color: var(--accent-gold); }
@@ -90,18 +99,6 @@
         .about-text { flex: 1; }
         .about-text h2 { font-family: var(--font-heading); font-size: 3rem; color: var(--primary-green); margin-bottom: 20px; font-weight: 400; }
         .about-text p { color: var(--text-light); font-size: 1.1rem; margin-bottom: 20px; }
-
-        /* =====================================================
-           IMAGE CONFIG — Add your image URLs here!
-           ===================================================== */
-        /* 
-          HOW TO ADD IMAGES TO PRODUCT CARDS:
-          Each card has a data-images attribute in the HTML.
-          Replace the placeholder paths like:
-            data-images="images/plant1.jpg,images/plant2.jpg,images/plant3.jpg"
-          or use full URLs:
-            data-images="https://example.com/img1.jpg,https://example.com/img2.jpg,..."
-        */
 
         /* --- FEATURED COLLECTION --- */
         .featured-section { padding: 100px 5%; background-color: var(--bg-white); }
@@ -237,7 +234,8 @@
 
 <nav>
     <div class="logo-space">
-        <i class="fa-solid fa-tree"></i> Logo <span>[Insert Image]</span>
+        <img src="logo.jpeg" alt="Enchanted Sapling Logo">
+        <span>Enchanted Sapling</span>
     </div>
     <ul class="nav-links">
         <li><a href="#">Home</a></li>
@@ -263,8 +261,7 @@
         </div>
     </div>
     <div class="hero-image-placeholder" data-aos="fade-left" data-aos-delay="400">
-        <!-- Replace src with your hero image URL -->
-        <img src="" alt="Hero Image" onerror="this.style.display='none'; this.parentElement.innerHTML='[ Main Hero Image Area ]';">
+        <img src="cover.png" alt="Hero Image" onerror="this.style.display='none'; this.parentElement.innerHTML='[ Main Hero Image Area ]';">
     </div>
 </section>
 
@@ -289,8 +286,7 @@
 
 <section id="about" class="about-section">
     <div class="about-image" data-aos="fade-right">
-        <!-- Replace src with your about/workshop image URL -->
-        <img src="" alt="About Image" onerror="this.style.display='none'; this.parentElement.innerHTML='[ Image of the Artist / Workshop ]';">
+        <img src="roots.jpeg" alt="About Image" onerror="this.style.display='none'; this.parentElement.innerHTML='[ Image of the Artist / Workshop ]';">
     </div>
     <div class="about-text" data-aos="fade-left">
         <span class="subtitle">Our Roots</span>
@@ -307,27 +303,13 @@
         <h2>Our Featured Collection</h2>
     </div>
 
-    <!--
-    ==========================================================
-    HOW TO ADD IMAGES TO CARDS:
-    For each product-card, set data-images to a comma-separated
-    list of 3 image URLs (relative paths or full URLs).
-    Example:
-      data-images="photos/plant1.jpg,photos/plant2.jpg,photos/plant3.jpg"
-    or:
-      data-images="https://i.imgur.com/abc.jpg,https://i.imgur.com/def.jpg,https://i.imgur.com/ghi.jpg"
-    ==========================================================
-    -->
-
     <div class="product-grid">
 
-        <!-- CARD 1: Custom Plants -->
         <div class="product-card"
              data-aos="fade-up" data-aos-delay="100"
              data-product="Custom Plants"
-             data-images="PLANT_IMG_1,PLANT_IMG_2,PLANT_IMG_3">
+             data-images="Custom-Plants-1.png,Custom-Plants-2.jpeg,Custom-Plants-3.jpeg">
             <div class="card-carousel">
-                <!-- slides injected by JS -->
                 <div class="carousel-dots"></div>
             </div>
             <div class="card-body">
@@ -338,11 +320,10 @@
             </div>
         </div>
 
-        <!-- CARD 2: Macramé Keychain -->
         <div class="product-card"
              data-aos="fade-up" data-aos-delay="200"
              data-product="Macramé Keychain"
-             data-images="KEYCHAIN_IMG_1,KEYCHAIN_IMG_2,KEYCHAIN_IMG_3">
+             data-images="Macramé Keychain_1.webp,Macramé Keychain_2.webp,Macramé Keychain_3.jpg">
             <div class="card-carousel">
                 <div class="carousel-dots"></div>
             </div>
@@ -354,11 +335,10 @@
             </div>
         </div>
 
-        <!-- CARD 3: Plant Hanger -->
         <div class="product-card"
              data-aos="fade-up" data-aos-delay="300"
              data-product="Macramé Plant Hanger"
-             data-images="HANGER_IMG_1,HANGER_IMG_2,HANGER_IMG_3">
+             data-images="Macramé Plant Hanger_1.webp,Macramé Plant Hanger_2.jpg,Macramé Plant Hanger_3.webp">
             <div class="card-carousel">
                 <div class="carousel-dots"></div>
             </div>
@@ -370,11 +350,10 @@
             </div>
         </div>
 
-        <!-- CARD 4: Wind Chime -->
         <div class="product-card"
              data-aos="fade-up" data-aos-delay="400"
              data-product="Macramé Wind Chime"
-             data-images="CHIME_IMG_1,CHIME_IMG_2,CHIME_IMG_3">
+             data-images="Macramé Wind Chime_1.jpg,Macramé Wind Chime_2.webp,Macramé Wind Chime_3.jpg">
             <div class="card-carousel">
                 <div class="carousel-dots"></div>
             </div>
@@ -386,11 +365,10 @@
             </div>
         </div>
 
-        <!-- CARD 5: Bookmark -->
         <div class="product-card"
              data-aos="fade-up" data-aos-delay="500"
              data-product="Macramé Bookmark"
-             data-images="BOOKMARK_IMG_1,BOOKMARK_IMG_2,BOOKMARK_IMG_3">
+             data-images="Macramé-Bookmark-1.jpg,Macramé-Bookmark-2.jpg,Macramé-Bookmark-3.webp">
             <div class="card-carousel">
                 <div class="carousel-dots"></div>
             </div>
