@@ -52,7 +52,7 @@
         .logo-space { font-family: var(--font-heading); font-size: 2.2rem; color: var(--primary-green); font-style: italic; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 8px; background: var(--bg-white); box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .logo-space span { font-size: 0.8rem; font-family: var(--font-body); color: var(--accent-gold); letter-spacing: 1px; }
         
-        /* ADDED: Logo CSS */
+        /* Logo CSS */
         .logo-space img {
             height: 40px;
             width: 40px;
@@ -435,15 +435,12 @@ window.addEventListener('load', () => {
 
 /* ============================================================
    CAROUSEL SETUP
-   Each card has data-images="url1,url2,url3"
-   We build slides and start a 2-second interval per card.
    ============================================================ */
 document.querySelectorAll('.product-card').forEach(card => {
     const rawImages = (card.getAttribute('data-images') || '').split(',').map(s => s.trim()).filter(Boolean);
     const carousel  = card.querySelector('.card-carousel');
     const dotsEl    = card.querySelector('.carousel-dots');
 
-    // Create 3 slides (use image if URL looks real, else show placeholder)
     const labels = ['Image 1', 'Image 2', 'Image 3'];
     rawImages.forEach((src, idx) => {
         const slide = document.createElement('div');
@@ -456,7 +453,6 @@ document.querySelectorAll('.product-card').forEach(card => {
             img.src = src;
             img.alt = card.getAttribute('data-product') + ' ' + (idx + 1);
             img.onerror = function() {
-                // fallback to placeholder label if image fails
                 this.parentElement.innerHTML = `<div class="placeholder-label">[ ${labels[idx]} ]</div>`;
             };
             slide.appendChild(img);
@@ -466,13 +462,11 @@ document.querySelectorAll('.product-card').forEach(card => {
 
         carousel.insertBefore(slide, dotsEl);
 
-        // dot
         const dot = document.createElement('span');
         if (idx === 0) dot.classList.add('active');
         dotsEl.appendChild(dot);
     });
 
-    // Auto-rotate every 2 seconds
     let current = 0;
     const slides = carousel.querySelectorAll('.carousel-slide');
     const dots   = dotsEl.querySelectorAll('span');
@@ -489,26 +483,18 @@ document.querySelectorAll('.product-card').forEach(card => {
 });
 
 /* ============================================================
-   ORDER CARD BUTTON — scrolls to form and pre-fills product
+   ORDER CARD BUTTON
    ============================================================ */
 function orderCard(btn) {
-    // Stop click from bubbling to card
     event.stopPropagation();
-
     const card        = btn.closest('.product-card');
     const productName = card.getAttribute('data-product') || 'Unknown Item';
 
-    // Pre-fill the description textarea
     const descField = document.getElementById('description');
     descField.value = `I would like to order: ${productName}\n\nAdditional details:\n`;
 
-    // Show notice
     document.getElementById('prefill-notice').style.display = 'block';
-
-    // Scroll to contact section
     document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-
-    // Focus description after scroll
     setTimeout(() => descField.focus(), 800);
 }
 
